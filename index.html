@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>PAKET: horror story (free dlc)</title>
+  
+  <!-- Стили -->
+  <link rel="stylesheet" href="style.css" />
+  
+  <!-- Иконка -->
+  <link rel="icon" href="favicon.ico">
+</head>
+<body>
+  <!-- Меню -->
+  <div id="menu" class="scene active">
+    <div class="container">
+      <h1 class="flicker glitch">PAKET: horror story (free dlc)</h1>
+      <div class="version">Demo 027a2</div>
+      <img src="https://placehold.co/600x200/000000/0F0?text=Официальный+трейлер&font=Press+Start+2P" class="cover" alt="Обложка">
+      <button class="btn-main" onclick="startGame()">ИГРАТЬ</button>
+      <button class="btn-main" onclick="showSettings()">НАСТРОЙКИ</button>
+      <button class="btn-main" onclick="showCredits()">КРЕДИТЫ</button>
+      <button class="btn-main" onclick="exitGame()">ВЫЙТИ</button>
+    </div>
+  </div>
+
+  <!-- Настройки -->
+  <div id="settings" class="scene hidden">
+    <div class="container">
+      <h2>НАСТРОЙКИ</h2>
+      <div class="version">Demo 027a2</div>
+      <p>ГРОМКОСТЬ: <input type="range" min="0" max="100" value="70" id="volume-slider"></p>
+      <p><label><input type="checkbox" id="effects-toggle" checked> ЭФФЕКТЫ</label></p>
+      <p><label><input type="checkbox" id="sound-toggle" checked> ЗВУК</label></p>
+      <p><label><input type="checkbox" id="optimization-toggle"> РЕЖИМ ОПТИМИЗАЦИИ</label></p>
+      <button class="btn-main" onclick="backToMenu()">НАЗАД</button>
+    </div>
+  </div>
+
+  <!-- Кредиты -->
+  <div id="credits" class="scene hidden">
+    <div class="container">
+      <h2>КРЕДИТЫ</h2>
+      <div class="version">Demo 027a2</div>
+      <p>РАЗРАБОТКА: HORROR GAMES STUDIO</p>
+      <p>СЦЕНАРИЙ: ДАНИЛ ПАКЕТОВ</p>
+      <p>МУЗЫКА: "ТИК-ТАК КАССЫ" © МАГНИТ RECORDS</p>
+      <p>ОСОБАЯ БЛАГОДАРНОСТЬ: КАССИРША #342</p>
+      <button class="btn-main" onclick="backToMenu()">НАЗАД</button>
+    </div>
+  </div>
+
+  <!-- Игровое поле -->
+  <div id="game" class="hidden">
+    <div class="status-bar health-bar" data-label="ЗДОРОВЬЕ">
+      <div class="status-fill" id="health-fill" data-value="100%"></div>
+    </div>
+    <div class="status-bar sanity-bar" data-label="САНГИНИТЕТ">
+      <div class="status-fill" id="sanity-fill" data-value="100%"></div>
+    </div>
+    
+    <div class="inventory" id="inventory">ПУСТО</div>
+    
+    <div class="container">
+      <h1 class="flicker glitch">PAKET: horror story (free dlc)</h1>
+      <div class="version">Demo 027a2</div>
+      <div id="game-scenes" class="game-scenes"></div>
+    </div>
+  </div>
+
+  <!-- Модальное окно оптимизации -->
+  <div id="optimization-modal" class="modal hidden">
+    <div class="modal-content">
+      <h2 class="glitch">ВКЛЮЧАЕМ РЕЖИМ ОПТИМИЗАЦИИ</h2>
+      <p>ПОЖАЛУЙСТА ПОДОЖДИТЕ <span id="optimization-timer">5</span></p>
+    </div>
+  </div>
+
+  <!-- Статические эффекты -->
+  <div class="static"></div>
+  <div class="scanline"></div>
+
+  <!-- Аудио -->
+  <audio id="bgm" loop></audio>
+  <audio id="sfx"></audio>
+
+  <!-- Основной скрипт -->
+  <script src="game.js"></script>
+</body>
+</html>
