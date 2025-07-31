@@ -1,8 +1,8 @@
 /* 
   ===========================================
-  PAKET: HORROR STORY - УПРОЩЕННЫЙ ДИЗАЙН
+  PAKET: HORROR STORY - FINAL EDITION
   ===========================================
-  Решение всех проблем с отображением
+  Версия: Demo 030a1
   ===========================================
 */
 
@@ -10,15 +10,18 @@
   --bg-dark: #000;
   --text: #fff;
   --accent: #0f0;
+  --accent-dark: #0a0;
+  --error: #f00;
   --font: 'Courier New', monospace;
   --glitch-shadow: 0 0 5px var(--accent), 0 0 10px var(--accent);
+  --transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
 * {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
-  transition: all 0.3s ease;
+  transition: var(--transition);
 }
 
 body {
@@ -33,20 +36,54 @@ body {
   line-height: 1.4;
   position: relative;
   z-index: 1;
+  background-image: 
+    linear-gradient(rgba(0, 255, 0, 0.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 255, 0, 0.02) 1px, transparent 1px);
+  background-size: 20px 20px;
+  animation: scanline 8s linear infinite;
+}
+
+@keyframes scanline {
+  0% { background-position: 0 0; }
+  100% { background-position: 0 100%; }
 }
 
 .container {
   max-width: 800px;
   margin: 0 auto;
   padding: 30px;
-  background: rgba(0, 0, 0, 0.9);
+  background: rgba(0, 0, 0, 0.85);
   border: 1px solid var(--accent);
   position: relative;
   overflow: hidden;
   z-index: 10;
   border-radius: 2px;
-  opacity: 1;
-  transform: translateY(0);
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeIn 0.6s forwards;
+}
+
+@keyframes fadeIn {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.container::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: var(--accent);
+  animation: glow 1.5s infinite alternate;
+}
+
+@keyframes glow {
+  0% { opacity: 0.3; }
+  100% { opacity: 1; }
 }
 
 .cover {
@@ -55,6 +92,12 @@ body {
   display: block;
   margin: 20px auto;
   border-radius: 2px;
+  transition: transform 0.3s ease;
+}
+
+.cover:hover {
+  transform: scale(1.02);
+  box-shadow: 0 0 15px var(--accent);
 }
 
 h1, h2 {
@@ -63,6 +106,17 @@ h1, h2 {
   position: relative;
   letter-spacing: 1px;
   font-weight: normal;
+  opacity: 0;
+  transform: translateY(10px);
+  animation: fadeInHeader 0.5s forwards;
+  animation-delay: 0.2s;
+}
+
+@keyframes fadeInHeader {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 h1::after {
@@ -76,24 +130,49 @@ h1::after {
   50% { opacity: 0; }
 }
 
-.scene-title {
-  font-size: 2.2em;
-  margin: 20px 0;
-  text-shadow: var(--glitch-shadow);
-  letter-spacing: 1px;
+/* === УЛУЧШЕННЫЙ СТИЛЬ ДЛЯ СЦЕН === */
+.scene-content {
   position: relative;
+  z-index: 2;
+}
+
+.scene-image {
+  max-width: 100%;
+  border-radius: 2px;
+  margin: 15px 0;
+  border: 1px solid var(--accent);
+  opacity: 0;
+  transform: scale(0.95);
+  animation: zoomIn 0.5s forwards;
+  animation-delay: 0.2s;
+}
+
+@keyframes zoomIn {
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
 }
 
 .scene-text {
   font-size: 1.1em;
   margin: 15px 0;
-  position: relative;
-  z-index: 2;
   line-height: 1.5;
   padding: 15px;
-  background: rgba(0, 0, 0, 0.3);
-  border-left: 2px solid var(--accent);
+  background: rgba(0, 0, 0, 0.4);
+  border-left: 3px solid var(--accent);
   border-radius: 0 4px 4px 0;
+  opacity: 0;
+  transform: translateY(10px);
+  animation: fadeInText 0.5s forwards;
+  animation-delay: 0.3s;
+}
+
+@keyframes fadeInText {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .scene-text::before {
@@ -107,6 +186,14 @@ h1::after {
 .accent {
   color: var(--accent);
   text-shadow: var(--glitch-shadow);
+}
+
+.character-name {
+  color: var(--accent);
+  font-weight: bold;
+  display: block;
+  margin: 10px 0 5px 0;
+  text-align: left;
 }
 
 /* === КРИТИЧЕСКИЕ СТИЛИ ДЛЯ КНОПОК === */
@@ -131,27 +218,63 @@ h1::after {
   font-weight: bold;
   text-transform: uppercase;
   box-shadow: 0 0 5px transparent;
-  opacity: 1;
-  transform: translateY(0);
+  opacity: 0;
+  transform: translateY(10px);
+  animation: fadeInButton 0.4s forwards;
 }
 
 .btn-main:hover {
   background: rgba(0, 255, 0, 0.1);
   box-shadow: var(--glitch-shadow);
+  transform: translateY(-2px);
+}
+
+.btn-main:active {
+  transform: translateY(0);
+}
+
+.btn-main::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg, 
+    transparent, 
+    rgba(255, 255, 255, 0.2), 
+    transparent
+  );
+  transition: 0.6s;
+}
+
+.btn-main:hover::after {
+  left: 100%;
 }
 
 .choice-btn {
   margin: 10px 0;
-  width: 100%;
-  opacity: 1;
-  transform: translateY(0);
+  animation: fadeInButton 0.4s forwards;
+  animation-delay: calc(0.1s * var(--i));
+}
+
+@keyframes fadeInButton {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .choices-container {
+  --i: 0;
   margin-top: 20px;
   display: grid;
   gap: 10px;
-  width: 100%;
+}
+
+.choices-container > * {
+  --i: calc(var(--i) + 1);
 }
 
 /* === СИСТЕМНЫЕ СТИЛИ === */
@@ -161,7 +284,8 @@ h1::after {
 
 .scene {
   display: block;
-  opacity: 1;
+  opacity: 0;
+  transition: opacity 0.5s ease;
   position: fixed;
   top: 0;
   left: 0;
@@ -171,6 +295,10 @@ h1::after {
   background: var(--bg-dark);
   padding-top: 40px;
   box-sizing: border-box;
+}
+
+.scene.active {
+  opacity: 1;
 }
 
 /* === ПАНЕЛИ СОСТОЯНИЯ === */
@@ -186,6 +314,10 @@ h1::after {
   font-size: 10px;
   text-align: center;
   line-height: 12px;
+  opacity: 0;
+  transform: translateY(-10px);
+  animation: fadeIn 0.4s forwards;
+  animation-delay: 0.4s;
 }
 
 .status-bar::before {
@@ -204,6 +336,7 @@ h1::after {
   height: 100%;
   width: 100%;
   background: var(--accent);
+  transition: width 0.5s ease;
   position: relative;
 }
 
@@ -228,7 +361,12 @@ h1::after {
   max-width: 200px;
   text-align: center;
   text-shadow: var(--glitch-shadow);
+  box-shadow: var(--glitch-shadow);
   font-family: monospace;
+  opacity: 0;
+  transform: translateY(10px);
+  animation: fadeIn 0.4s forwards;
+  animation-delay: 0.5s;
 }
 
 /* === СТИЛЬ ДЛЯ ВЕРСИИ === */
@@ -257,11 +395,17 @@ h1::after {
   justify-content: center;
   align-items: center;
   z-index: 2000;
-  opacity: 1;
+  opacity: 0;
+  animation: modalFade 0.3s ease forwards;
 }
 
 .modal.hidden {
   display: none;
+}
+
+@keyframes modalFade {
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
 
 .modal-content {
@@ -272,6 +416,16 @@ h1::after {
   box-shadow: var(--glitch-shadow);
   max-width: 500px;
   width: 90%;
+  transform: scale(0.8);
+  opacity: 0;
+  animation: modalIn 0.4s forwards;
+}
+
+@keyframes modalIn {
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
 }
 
 .modal-content h2 {
@@ -282,6 +436,37 @@ h1::after {
 .modal-content p {
   font-size: 1.5em;
   color: var(--accent);
+}
+
+/* === СТАТИЧЕСКИЕ ЭФФЕКТЫ === */
+.static {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  opacity: 0.05;
+  z-index: 99;
+  background-image: url("image/svg+xml,%3csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3e%3crect width='100%25' height='100%25' fill='none' stroke='%230f0' stroke-width='2' stroke-dasharray='5%2c10' stroke-dashoffset='0' stroke-opacity='0.05'/%3e%3c/svg%3e");
+}
+
+.scanline {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  background: linear-gradient(
+    to bottom,
+    transparent,
+    transparent 50%,
+    rgba(0, 255, 0, 0.05) 50%,
+    rgba(0, 255, 0, 0.05)
+  );
+  background-size: 100% 4px;
+  z-index: 98;
 }
 
 /* === МОБИЛЬНЫЕ АДАПТАЦИИ === */
@@ -319,9 +504,5 @@ h1::after {
   
   .status-fill::after {
     font-size: 9px;
-  }
-  
-  .scene-title {
-    font-size: 1.8em;
   }
 }

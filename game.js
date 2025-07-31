@@ -1,4 +1,5 @@
 // game.js - ЕДИНЫЙ ФАЙЛ С ИГРОЙ
+// Версия: Demo 030a1
 
 // Глобальное состояние игры
 let gameState = {
@@ -438,9 +439,10 @@ function renderScene(sceneId) {
   
   // Генерируем HTML сцены
   let sceneHTML = `
-    <div class="scene-title glitch">${scene.title}</div>
-    <img src="${scene.image}" class="scene-image" alt="${scene.title}">
-    <div class="scene-text">${scene.text}</div>
+    <div class="scene-content">
+      <img src="${scene.image}" class="scene-image" alt="${scene.title}">
+      <div class="scene-text">${scene.text}</div>
+    </div>
   `;
   
   // Добавляем варианты выбора
@@ -807,7 +809,108 @@ window.battleBattle = {
   }
 };
 
+// Режим оптимизации
+function toggleOptimizationMode() {
+  const optimizationToggle = document.getElementById('optimization-toggle');
+  if (!optimizationToggle) return;
+  
+  if (optimizationToggle.checked) {
+    showOptimizationModal();
+  } else {
+    disableOptimizationMode();
+  }
+}
+
+function showOptimizationModal() {
+  const modal = document.getElementById('optimization-modal');
+  const timer = document.getElementById('optimization-timer');
+  let seconds = 5;
+  
+  modal.classList.remove('hidden');
+  timer.textContent = seconds;
+  
+  const interval = setInterval(() => {
+    seconds--;
+    timer.textContent = seconds;
+    
+    if (seconds <= 0) {
+      clearInterval(interval);
+      modal.classList.add('hidden');
+      enableOptimizationMode();
+    }
+  }, 1000);
+}
+
+function enableOptimizationMode() {
+  console.log("⚡ Включаем режим оптимизации");
+  
+  // Сохраняем состояние
+  localStorage.setItem('optimizationMode', 'true');
+  
+  // Применяем оптимизации
+  document.body.classList.add('optimization-mode');
+  
+  // Отключаем анимации
+  document.body.style.animation = 'none';
+  
+  // Упрощаем графику
+  document.querySelectorAll('img').forEach(img => {
+    if (!img.src.includes('placehold.co')) {
+      img.src = img.src.replace(/(https?:\/\/[^/]+\/)(.*)/, '$1600x400/000000/0F0?text=Оптимизировано&font=Press+Start+2P');
+    }
+  });
+  
+  // Отключаем статику и сканирующую линию
+  document.querySelector('.static').style.display = 'none';
+  document.querySelector('.scanline').style.display = 'none';
+  
+  // Обновляем интерфейс
+  updateStats();
+}
+
+function disableOptimizationMode() {
+  console.log("⚡ Отключаем режим оптимизации");
+  
+  // Сохраняем состояние
+  localStorage.setItem('optimizationMode', 'false');
+  
+  // Восстанавливаем оригинальные настройки
+  document.body.classList.remove('optimization-mode');
+  
+  // Включаем анимации
+  const effectsToggle = document.getElementById('effects-toggle');
+  if (effectsToggle && effectsToggle.checked) {
+    document.body.style.animation = '';
+  }
+  
+  // Восстанавливаем оригинальные изображения
+  document.querySelectorAll('img').forEach(img => {
+    if (img.src.includes('Оптимизировано')) {
+      img.src = img.dataset.originalSrc || img.src;
+    }
+  });
+  
+  // Включаем статику и сканирующую линию
+  document.querySelector('.static').style.display = 'block';
+  document.querySelector('.scanline').style.display = 'block';
+  
+  // Обновляем интерфейс
+  updateStats();
+}
+
 // Автоинициализация
 document.addEventListener('DOMContentLoaded', () => {
   loadState();
+  
+  // Настройка режима оптимизации
+  const optimizationToggle = document.getElementById('optimization-toggle');
+  if (optimizationToggle) {
+    optimizationToggle.checked = localStorage.getItem('optimizationMode') === 'true';
+    optimizationToggle.addEventListener('change', toggleOptimizationMode);
+  }
+  
+  // Активируем сцены
+  document.querySelectorAll('.scene').forEach(scene => {
+    scene.classList.add('active');
+  });
 });
