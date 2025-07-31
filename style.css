@@ -2,7 +2,7 @@
   ===========================================
   PAKET: HORROR STORY - FINAL EDITION
   ===========================================
-  Версия: Demo 030a1
+  Версия: Demo 030a2
   ===========================================
 */
 
@@ -468,6 +468,148 @@ h1::after {
   background-size: 100% 4px;
   z-index: 98;
 }
+
+/* === МИНИ-ИГРЫ === */
+.minigame-container {
+  margin: 25px 0;
+  padding: 15px;
+  background: rgba(0, 0, 0, 0.8);
+  border: 1px solid var(--accent);
+  box-shadow: var(--glitch-shadow);
+  border-radius: 2px;
+}
+
+.minigame-title {
+  font-size: 1.4em;
+  color: var(--accent);
+  margin-bottom: 15px;
+  text-shadow: var(--glitch-shadow);
+  font-weight: bold;
+  letter-spacing: 1px;
+  text-align: center;
+}
+
+.chase-track {
+  width: 100%;
+  height: 20px;
+  background: #222;
+  position: relative;
+  border: 1px solid #444;
+  overflow: hidden;
+  margin: 15px 0;
+  border-radius: 2px;
+  box-shadow: 0 0 5px rgba(0, 255, 0, 0.2);
+}
+
+.chase-runner {
+  position: absolute;
+  width: 15px;
+  height: 20px;
+  background: var(--accent);
+  left: 0;
+  border-radius: 2px;
+  animation: pulse 0.5s infinite;
+}
+
+@keyframes pulse {
+  0% { box-shadow: 0 0 0 0 rgba(0, 255, 0, 0.7); }
+  70% { box-shadow: 0 0 0 10px rgba(0, 255, 0, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(0, 255, 0, 0); }
+}
+
+.chase-zone {
+  position: absolute;
+  height: 100%;
+}
+
+.good-zone {
+  width: 30%;
+  background: rgba(0, 200, 0, 0.2);
+  left: 35%;
+}
+
+.danger-zone {
+  width: 30%;
+  background: rgba(200, 0, 0, 0.2);
+  left: 65%;
+}
+
+.chase-instructions {
+  color: var(--accent);
+  margin: 10px 0;
+  text-shadow: var(--glitch-shadow);
+  font-weight: bold;
+}
+
+.chase-counter {
+  color: var(--accent);
+  margin-top: 10px;
+  font-weight: bold;
+}
+
+.battle-arena {
+  display: flex;
+  justify-content: space-between;
+  margin: 20px 0;
+  gap: 20px;
+}
+
+.battle-character {
+  width: 45%;
+  text-align: center;
+  animation: float 6s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+.battle-controls {
+  display: flex;
+  gap: 15px;
+  margin: 15px 0;
+}
+
+.battle-btn {
+  flex: 1;
+  padding: 10px;
+  background: rgba(0, 0, 0, 0.7);
+  border: 1px solid var(--accent);
+  color: var(--accent);
+  cursor: pointer;
+  text-shadow: var(--glitch-shadow);
+  font-family: var(--font);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-size: 14px;
+  border-radius: 2px;
+  transition: var(--transition);
+}
+
+.battle-btn:hover {
+  background: rgba(0, 255, 0, 0.1);
+  transform: translateY(-2px);
+}
+
+.battle-log {
+  height: 80px;
+  overflow-y: auto;
+  background: rgba(0, 0, 0, 0.5);
+  padding: 10px;
+  margin: 10px 0;
+  text-align: left;
+  font-size: 0.9em;
+  border: 1px solid #333;
+  font-family: monospace;
+  line-height: 1.3;
+  border-radius: 2px;
+}
+
+.player-action { color: var(--accent); }
+.enemy-action { color: var(--error); }
+.victory { color: var(--accent); font-weight: bold; }
+.defeat { color: var(--error); font-weight: bold; }
 
 /* === МОБИЛЬНЫЕ АДАПТАЦИИ === */
 @media (max-width: 768px) {

@@ -1,5 +1,5 @@
 // game.js - ЕДИНЫЙ ФАЙЛ С ИГРОЙ
-// Версия: Demo 030a1
+// Версия: Demo 030a2
 
 // Глобальное состояние игры
 let gameState = {
@@ -13,7 +13,11 @@ let gameState = {
     risky: 0
   },
   currentScene: 'scene1',
-  sceneHistory: []
+  sceneHistory: [],
+  settings: {
+    textAnimation: true,
+    textVoice: true
+  }
 };
 
 // Все сцены
@@ -354,6 +358,226 @@ const scenes = {
     ]
   },
 
+  // Новые сцены
+  scene10: {
+    type: 'scene',
+    title: 'ПОДВАЛ',
+    image: 'https://placehold.co/600x300/000000/0F0?text=Подвал&font=Press+Start+2P',
+    text: 'Ты спустился в подвал магазина. Здесь темно и пахнет плесенью. <br>В углу виднеется <span class="accent">светящийся ящик</span> с надписью <span class="accent">"НЕ ОТКРЫВАТЬ"</span>.',
+    choices: [
+      {
+        text: 'ОТКРЫТЬ ЯЩИК',
+        consequence: {
+          sanity: -25,
+          risky: true
+        },
+        nextScene: 'scene10a'
+      },
+      {
+        text: 'ВЕРНУТЬСЯ НАВЕРХ',
+        nextScene: 'scene3'
+      }
+    ]
+  },
+
+  scene10a: {
+    type: 'scene',
+    title: 'ЯЩИК',
+    image: 'https://placehold.co/600x300/000000/0F0?text=Ящик&font=Press+Start+2P',
+    text: 'В ящике лежит <span class="flicker accent">старый магнитофон</span> и кассета с надписью <span class="accent">"Для Данила"</span>. <br>Ты вспоминаешь, что сегодня твой день рождения.',
+    choices: [
+      {
+        text: 'ВКЛЮЧИТЬ МАГНИТОФОН',
+        consequence: {
+          sanity: +10
+        },
+        nextScene: 'scene10b'
+      },
+      {
+        text: 'ВЗЯТЬ КАССЕТУ',
+        consequence: {
+          inventory: ['Кассета']
+        },
+        nextScene: 'scene10c'
+      }
+    ]
+  },
+
+  scene10b: {
+    type: 'scene',
+    title: 'ЗАПИСЬ',
+    image: 'https://placehold.co/600x300/000000/0F0?text=Запись&font=Press+Start+2P',
+    text: 'Из магнитофона раздается голос: <br><span class="accent">"Данил, если ты это слышишь, значит ты выбрал правильный путь. Пакет - это ключ..."</span> <br>Запись обрывается странным шипением.',
+    choices: [
+      {
+        text: 'ВЕРНУТЬСЯ НАВЕРХ',
+        nextScene: 'scene3'
+      },
+      {
+        text: 'ПОИСКАТЬ ЕЩЕ',
+        nextScene: 'scene10d'
+      }
+    ]
+  },
+
+  scene10c: {
+    type: 'scene',
+    title: 'КАССЕТА',
+    image: 'https://placehold.co/600x300/000000/0F0?text=Кассета&font=Press+Start+2P',
+    text: 'Ты держишь в руках кассету. На ней надпись: <br><span class="accent">"Воспроизведи в кассе №3"</span>. <br>Ты вспоминаешь, что в магазине есть старый магнитофон в углу.',
+    choices: [
+      {
+        text: 'ВЕРНУТЬСЯ В МАГАЗИН',
+        nextScene: 'scene3'
+      }
+    ]
+  },
+
+  scene10d: {
+    type: 'scene',
+    title: 'ПОДВАЛ',
+    image: 'https://placehold.co/600x300/000000/0F0?text=Подвал&font=Press+Start+2P',
+    text: 'Ты продолжаешь исследовать подвал. В дальнем углу виднеется <span class="accent">потайная дверь</span>, покрытая паутиной.',
+    choices: [
+      {
+        text: 'ОТКРЫТЬ ДВЕРЬ',
+        consequence: {
+          sanity: -30,
+          risky: true
+        },
+        nextScene: 'scene11'
+      },
+      {
+        text: 'ВЕРНУТЬСЯ НАВЕРХ',
+        nextScene: 'scene3'
+      }
+    ]
+  },
+
+  scene11: {
+    type: 'scene',
+    title: 'ПОТЁМКИ',
+    image: 'https://placehold.co/600x300/000000/000000?text=Потёмки&font=Press+Start+2P',
+    text: 'За дверью полная темнота. Ты слышишь странные звуки и чье-то дыхание. <br>Внезапно дверь за тобой <span class="flicker accent">захлопывается</span>!',
+    choices: [
+      {
+        text: 'КРИЧАТЬ',
+        consequence: {
+          sanity: -40
+        },
+        nextScene: 'ending10'
+      },
+      {
+        text: 'ИСКАТЬ ВЫХОД',
+        consequence: {
+          sanity: -20
+        },
+        nextScene: 'scene12'
+      }
+    ]
+  },
+
+  scene12: {
+    type: 'scene',
+    title: 'ТЕМНЫЙ КОРИДОР',
+    image: 'https://placehold.co/600x300/000000/0F0?text=Темный+коридор&font=Press+Start+2P',
+    text: 'Ты идешь по темному коридору. Стены покрыты странными символами. <br>Впереди виднеется <span class="accent">слабый свет</span>.',
+    choices: [
+      {
+        text: 'ИДТИ НА СВЕТ',
+        nextScene: 'scene13'
+      },
+      {
+        text: 'ВЕРНУТЬСЯ К ДВЕРИ',
+        nextScene: 'scene11'
+      }
+    ]
+  },
+
+  scene13: {
+    type: 'scene',
+    title: 'ТАЙНАЯ КОМНАТА',
+    image: 'https://placehold.co/600x300/000000/0A0?text=Тайная+комната&font=Press+Start+2P',
+    text: 'Ты попадаешь в комнату с <span class="flicker accent">огромным монитором</span>. <br>На экране надпись: <span class="accent">"Пакет - это ты"</span>. <br>Ты слышишь голос из динамика: <span class="accent">"Добро пожаловать домой, Данил"</span>.',
+    choices: [
+      {
+        text: 'ПОДОЙТИ К МОНИТОРУ',
+        nextScene: 'scene14'
+      },
+      {
+        text: 'ПОПЫТАТЬСЯ ВЫЙТИ',
+        nextScene: 'ending11'
+      }
+    ]
+  },
+
+  scene14: {
+    type: 'scene',
+    title: 'МОНИТОР',
+    image: 'https://placehold.co/600x300/000000/0F0?text=Монитор&font=Press+Start+2P',
+    text: 'Ты подходишь к монитору. На экране появляется твое отражение, но <span class="flicker accent">оно улыбается</span>. <br>Твое отражение говорит: <span class="accent">"Ты уже давно в пакете, Данил. Ты - золотой пакет"</span>.',
+    choices: [
+      {
+        text: 'ПРИНЯТЬ СУДЬБУ',
+        nextScene: 'ending12'
+      },
+      {
+        text: 'ОТКАЗАТЬСЯ',
+        nextScene: 'ending13'
+      }
+    ]
+  },
+
+  // Расширенные концовки
+  ending10: {
+    type: 'ending',
+    title: 'КОНЕЦ #10: ЗАКРЫТЫЙ',
+    image: 'https://placehold.co/600x300/000000/0F0?text=Закрытый&font=Press+Start+2P',
+    text: 'Ты застрял в темноте навсегда. <br>Твои крики никто не слышит. <br>Ты становишься частью магазина, как и все остальные...'
+  },
+
+  ending11: {
+    type: 'ending',
+    title: 'КОНЕЦ #11: ПОТЕРЯННЫЙ',
+    image: 'https://placehold.co/600x300/000000/0A0?text=Потерянный&font=Press+Start+2P',
+    text: 'Ты блуждаешь по бесконечным коридорам подвала. <br>Время теряет смысл. <br>Ты больше не помнишь, кто ты и зачем пришел сюда...'
+  },
+
+  ending12: {
+    type: 'ending',
+    title: 'КОНЕЦ #12: ПРИНЯТЫЙ',
+    image: 'https://placehold.co/600x300/000000/0F0?text=Принятый&font=Press+Start+2P',
+    text: 'Ты принимаешь свою судьбу. <br>Ты понимаешь, что всегда был золотым пакетом. <br>Ты становишься частью Магнита навсегда...'
+  },
+
+  ending13: {
+    type: 'ending',
+    title: 'КОНЕЦ #13: ОТВЕРГНУТЫЙ',
+    image: 'https://placehold.co/600x300/000000/0A0?text=Отвергнутый&font=Press+Start+2P',
+    text: 'Ты отказываешься от своей судьбы. <br>Монитор взрывается, и ты теряешь сознание. <br>Когда ты просыпаешься, ты снова в микрорайоне...'
+  },
+
+  ending14: {
+    type: 'ending',
+    title: 'КОНЕЦ #14: СБЕЖАВШИЙ',
+    image: 'https://placehold.co/600x300/000000/0F0?text=Сбежавший&font=Press+Start+2P',
+    text: 'Ты находишь способ сбежать из магазина. <br>Но когда выходишь на улицу, видишь, что вокруг <span class="flicker accent">ничего нет</span>. <br>Ты понимаешь, что мир закончился...'
+  },
+
+  ending15: {
+    type: 'ending',
+    title: 'КОНЕЦ #15: ПОБЕДИТЕЛЬ',
+    image: 'https://placehold.co/600x300/000000/0A0?text=Победитель&font=Press+Start+2P',
+    text: 'Ты побеждаешь всех врагов и находишь выход. <br>Но когда выходишь на улицу, понимаешь, что <span class="flicker accent">ты все еще в пакете</span>. <br>Ты смеешься и идешь дальше...'
+  },
+
+  ending16: {
+    type: 'ending',
+    title: 'КОНЕЦ #16: СОЗДАТЕЛЬ',
+    image: 'https://placehold.co/600x300/000000/0F0?text=Создатель&font=Press+Start+2P',
+    text: 'Ты находишь комнату с компьютером. <br>Ты понимаешь, что можешь <span class="flicker accent">изменить код реальности</span>. <br>Ты становишься создателем нового мира...'
+  },
+
   // Концовки
   ending1: {
     type: 'ending',
@@ -441,9 +665,16 @@ function renderScene(sceneId) {
   let sceneHTML = `
     <div class="scene-content">
       <img src="${scene.image}" class="scene-image" alt="${scene.title}">
-      <div class="scene-text">${scene.text}</div>
-    </div>
   `;
+  
+  // Добавляем текст с анимацией
+  if (gameState.settings.textAnimation) {
+    sceneHTML += `<div class="scene-text" id="animated-text"></div>`;
+  } else {
+    sceneHTML += `<div class="scene-text">${scene.text}</div>`;
+  }
+  
+  sceneHTML += `</div>`;
   
   // Добавляем варианты выбора
   if (scene.type === 'scene' && scene.choices) {
@@ -486,6 +717,22 @@ function renderScene(sceneId) {
   
   if (container) {
     container.innerHTML = sceneHTML;
+    
+    // Анимация текста
+    if (gameState.settings.textAnimation) {
+      const animatedText = document.getElementById('animated-text');
+      if (animatedText) {
+        typeText(animatedText, scene.text, 30);
+        
+        // Озвучка текста
+        if (gameState.settings.textVoice && 'speechSynthesis' in window) {
+          const utterance = new SpeechSynthesisUtterance(scene.text.replace(/<[^>]*>?/gm, ''));
+          utterance.lang = 'ru-RU';
+          utterance.rate = 0.9;
+          speechSynthesis.speak(utterance);
+        }
+      }
+    }
   }
   
   // Сохраняем состояние
@@ -499,6 +746,39 @@ function renderScene(sceneId) {
       }
     }, 300);
   }
+}
+
+// Функция плавного появления текста
+function typeText(element, text, speed) {
+  element.textContent = '';
+  
+  // Удаляем HTML-теги для озвучки
+  const cleanText = text.replace(/<[^>]*>?/gm, '');
+  
+  let i = 0;
+  const typing = setInterval(() => {
+    if (i < cleanText.length) {
+      element.innerHTML = cleanText.substring(0, i + 1)
+        .replace(/\n/g, '<br>')
+        .replace(/ {2}/g, '&nbsp;&nbsp;');
+      
+      // Добавляем акцентные стили обратно
+      element.innerHTML = element.innerHTML
+        .replace(/(ЛЮДМИЛКА:)/g, '<span class="accent flicker">$1</span>')
+        .replace(/(ЗОЛОТОЙ ПАКЕТ)/g, '<span class="flicker accent">$1</span>')
+        .replace(/(ДАНИЛ)/g, '<span class="accent">$1</span>')
+        .replace(/(МАГНИТ МОЯ ЦЕНА)/g, '<span class="accent">$1</span>')
+        .replace(/(Данил)/g, '<span class="accent">$1</span>')
+        .replace(/(Пакет)/g, '<span class="flicker accent">$1</span>')
+        .replace(/(Данад)/g, '<span class="flicker accent">$1</span>')
+        .replace(/(ДАНАД)/g, '<span class="flicker accent">$1</span>')
+        .replace(/(>\*)/g, '<span class="flicker">*</span>');
+      
+      i++;
+    } else {
+      clearInterval(typing);
+    }
+  }, speed);
 }
 
 // Принятие решения
@@ -605,7 +885,8 @@ function restartGame() {
       risky: 0
     },
     currentScene: 'scene1',
-    sceneHistory: []
+    sceneHistory: [],
+    settings: gameState.settings
   };
   
   saveState();
@@ -639,6 +920,7 @@ window.chaseBattle = {
     let speed = 2;
     const runner = document.getElementById('chase-runner');
     
+    // Анимация движения
     const animate = () => {
       progress += speed;
       if (progress > 100) progress = 0;
@@ -648,6 +930,7 @@ window.chaseBattle = {
     
     animate();
     
+    // Обработчик нажатий
     document.addEventListener('keydown', (e) => {
       if (e.code === 'Space') {
         const zonePosition = runner.offsetLeft + runner.offsetWidth/2;
@@ -898,15 +1181,67 @@ function disableOptimizationMode() {
   updateStats();
 }
 
+// Настройки
+function loadSettings() {
+  try {
+    const settings = JSON.parse(localStorage.getItem('paket_game_settings') || '{}');
+    
+    // Текстовая анимация
+    const textAnimationToggle = document.getElementById('text-animation-toggle');
+    if (textAnimationToggle) {
+      textAnimationToggle.checked = settings.textAnimation ?? true;
+      gameState.settings.textAnimation = textAnimationToggle.checked;
+    }
+    
+    // Озвучка текста
+    const textVoiceToggle = document.getElementById('text-voice-toggle');
+    if (textVoiceToggle) {
+      textVoiceToggle.checked = settings.textVoice ?? true;
+      gameState.settings.textVoice = textVoiceToggle.checked;
+    }
+  } catch (e) {
+    console.warn("⚠️ Не удалось загрузить настройки");
+  }
+}
+
+function saveSettings() {
+  try {
+    localStorage.setItem('paket_game_settings', JSON.stringify(gameState.settings));
+  } catch (e) {
+    console.warn("⚠️ Не удалось сохранить настройки");
+  }
+}
+
 // Автоинициализация
 document.addEventListener('DOMContentLoaded', () => {
   loadState();
+  loadSettings();
   
   // Настройка режима оптимизации
   const optimizationToggle = document.getElementById('optimization-toggle');
   if (optimizationToggle) {
     optimizationToggle.checked = localStorage.getItem('optimizationMode') === 'true';
     optimizationToggle.addEventListener('change', toggleOptimizationMode);
+  }
+  
+  // Настройка анимации текста
+  const textAnimationToggle = document.getElementById('text-animation-toggle');
+  if (textAnimationToggle) {
+    textAnimationToggle.checked = gameState.settings.textAnimation;
+    textAnimationToggle.addEventListener('change', (e) => {
+      gameState.settings.textAnimation = e.target.checked;
+      saveSettings();
+    });
+  }
+  
+  // Настройка озвучки текста
+  const textVoiceToggle = document.getElementById('text-voice-toggle');
+  if (textVoiceToggle) {
+    textVoiceToggle.checked = gameState.settings.textVoice;
+    textVoiceToggle.addEventListener('change', (e) => {
+      gameState.settings.textVoice = e.target.checked;
+      saveSettings();
+    });
   }
   
   // Активируем сцены
